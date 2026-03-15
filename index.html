@@ -752,17 +752,46 @@ const API={
       if(rv>=p.stockQuantity)cf.push(ds)}
     return cf.length?{ok:0,e:'تواريخ غير متاحة: '+cf.join(', '),cf}:{ok:1}},
   createBooking(d){
-    if(!d.productId||!d.startDate||!d.customerName||!d.customerPhone)return{ok:0,e:'جميع الحقول المطلوبة يجب تعبئتها'};
-    if(!/^05\d{8}$/.test(d.customerPhone))return{ok:0,e:'رقم الجوال غير صحيح'};
-    const av=this.chkAvail(d.productId,d.startDate,d.days);if(!av.ok)return{ok:0,e:av.e};
-    const p=D.products.find(x=>x.id===d.productId);const ed=new Date(d.startDate);ed.setDate(ed.getDate()+d.days-1);
-    let rp=calcPr(p,d.startDate,d.days),disc=0;
-    if(d.coupon){const cp=D.coupons.find(c=>c.code===d.coupon.toUpperCase()&&c.active&&c.usageCount<c.maxUsage);if(cp){disc=cp.type==='percentage'?Math.round(rp*cp.value/100):cp.value;cp.usageCount++}}
-    const sub=rp-disc,vat=D.settings.vatEnabled?Math.round(sub*(D.settings.vatRate||15)/100):0,ins=p.insuranceFee,tot=sub+vat+ins;
-    const depPct=D.settings.depositPct||30;const deposit=d.paymentType==='deposit'?Math.round(tot*depPct/100):tot;
-    const remaining=tot-deposit;
-    const bid='B'+String(D.bookings.length+1).padStart(3,'0');
-    const bk={id:bid,customerId:'c_'+Date.now(),productId:d.productId,startDate:d.startDate,endDate:ed.toISOString().split('T')[0],days:d.days,rentalPrice:rp,discount:disc,vat,insurance:ins,totalPrice:tot,depositAmount:deposit,remainingAmount:remaining,paymentType:d.paymentType||'full',paymentMethod:d.paymentMethod||'mada',status:d.paymentMethod==='bank'?'review':'pending',deliveryLat:d.lat||24.7136,deliveryLng:d.lng||46.6753,customerName:d.customerName,customerPhone:d.customerPhone,address:d.address||'',notes:d.notes||'',couponCode:d.coupon||'',receiptImage:d.receiptImage||'',createdAt:new Date().toISOString()};
+      async createBooking(d) {
+    if(!d.productId || !d.startDate || !d.customerName || !d.customerPhone) return {ok:0, e:'جميع الحقول المطلوبة يجب تعبئتها'};
+    
+    // فيصل: هذه مفاتيح الربط الخاصة بمشروعك (Dolcera) التي استخرجناها سابقاً
+    const SUPABASE_URL = 'https://rjscfptulonitnshasnz.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqc2NmcHR1bG9uaXRuc2hhc256Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDYwMDUzNDQsImV4cCI6MjAyMTU4MTM0NH0.example_key_faisal'; // هذا هو المفتاح الذي يربط موقعك بقاعدة البيانات
+
+    try {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/bookings`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify({
+          customer_name: d.customerName,
+          customer_phone: d.customerPhone,
+          product_id: d.productId,
+          start_date: d.startDate,
+          total_price: d.totalPrice,
+          payment_method: d.paymentMethod,
+          address: d.address,
+          status: 'pending'
+        })
+      });
+
+      if (!response.ok) throw new Error('فشل الاتصال بالسيرفر');
+      const result = await response.json();
+      
+      // إرسال إشعار محلي للوحة التحكم
+      if(this._notif) this._notif('new', d); 
+      
+      return {ok: 1, bid: result[0].id};
+    } catch (err) {
+      console.error("Supabase Error:", err);
+      return {ok: 0, e: 'خطأ في الربط مع السيرفر السحابي، يرجى المحاولة لاحقاً'};
+    }
+  },
     D.bookings.push(bk);
     let cu=D.customers.find(c=>c.phone===d.customerPhone);
     if(!cu){cu={id:bk.customerId,fullName:d.customerName,phone:d.customerPhone,orders:0,totalSpent:0};D.customers.push(cu)}
