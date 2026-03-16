@@ -916,8 +916,8 @@ const D={
     {code:'FIRST50',type:'fixed',value:50,active:true,usageCount:8,maxUsage:50},
   ],
   bankAccounts:[
-    {id:'ba1',bankName:'الراجحي',iban:'SA0380000000608010167519',accountHolder:'مؤسسة دولسيرا للضيافة',active:true},
-    {id:'ba2',bankName:'الأهلي',iban:'SA4410000001234567891234',accountHolder:'مؤسسة دولسيرا للضيافة',active:true},
+    {id:'ba1',bankName:'الراجحي',iban:'SA27800002526080546658',accountHolder:'فيصل إبراهيم التويجري',active:true},
+    {id:'ba2',bankName:'الإنماء',iban:'SA1105000068203921998000',accountHolder:'فيصل إبراهيم التويجري',active:true},
   ],
   transactions:[],notifications:[],
   sections:[
@@ -956,9 +956,9 @@ const D={
   settings:{storeName:'دولسيرا',whatsApp:'0550303349',bufferHours:12,weekendMarkup:15,vatRate:15,vatEnabled:true,insuranceFee:200,depositPct:30,theme:'gold',heroImage:'',taxNumber:'',invoiceCounter:1001,bgColor:'#07090f',logoUrl:'',btnColor:'',fontFamily:'Tajawal',fontSize:16,cursorType:'glow',cursorEnabled:true,waIcon:'',bannerEnabled:false,bannerText:'🎉 خصم 20% على جميع الباقات — استخدم كود DOLCERA20',bannerColor:'#c8a14c',bannerTextColor:'#07090f',glowColor:'rgba(200,161,76,.05)',borderColor:'',payMada:false,payVisa:false,payApple:false,payBank:true,receiptRequired:false,autoCancelHours:1},
   policies:{
     privacy:'سياسة الخصوصية\n\nنحن في دولسيرا نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية. يتم جمع البيانات فقط لأغراض تنفيذ الحجوزات وتحسين الخدمة.',
-    terms:'الشروط والأحكام\n\nباستخدام خدمات دولسيرا، فإنك توافق على الالتزام بهذه الشروط. يحق لنا تعديل الأسعار والشروط في أي وقت مع إشعار مسبق.',
-    refund:'سياسة الإرجاع والاسترداد\n\nيمكن إلغاء الحجز قبل 48 ساعة من الموعد مع استرداد كامل المبلغ. في حال الإلغاء خلال 48 ساعة يتم خصم 30% رسوم إدارية.',
-    faq:'الأسئلة الشائعة\n\nس: كيف أحجز؟\nج: اختر الباقة، حدد التاريخ، أدخل بياناتك، وادفع.\n\nس: هل التوصيل مجاني؟\nج: نعم، التوصيل والتركيب مجاني داخل المدينة.'
+    terms:'الشروط والأحكام\n\nباستخدام خدمات دولسيرا، فإنك توافق على الالتزام بهذه الشروط. يحق لنا تعديل الأسعار والشروط في أي وقت دون إشعار مسبق.',
+    refund:'سياسة الإرجاع والاسترداد\n\nيمكن إلغاء الحجز خلال 48 ساعة من تاريخ الطلب. في حال الإلغاء خلال 48 ساعة يتم خصم قيمة العربون%  .',
+    faq:'الأسئلة الشائعة\n\nس: كيف أحجز؟\nج: اختر الباقة، حدد التاريخ، أدخل بياناتك، وادفع.\n\nس: كم تكلفة التوصيل؟\nج: التوصيل والتركيب فقط بـ100 داخل بريدة.'
   }
 };
 function ld(){const s=localStorage.getItem('dv4');if(s)try{const p=JSON.parse(s);Object.keys(p).forEach(k=>{if(k in D)D[k]=p[k]})}catch(e){}}
