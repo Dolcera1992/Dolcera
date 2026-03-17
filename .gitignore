@@ -1,0 +1,46 @@
+# Environment variables
+.env
+.env.local
+.env.production
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+temp/
+
+# Build outputs (if using build tools in future)
+dist/
+build/
+.cache/
+
+# Node modules (if adding npm in future)
+node_modules/
+
+# Backup files
+*.backup
+*.bak
+*.old
+
+# Local development
+local/
+dev/
